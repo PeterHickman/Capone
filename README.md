@@ -35,5 +35,12 @@ action:
     prefix: '/sbin/iptables -I INPUT -s'
     suffix: '-j DROP'
 ```
+Or for `ufw`
+
+```yaml
+action:
+    prefix: 'ufw insert 1 deny from'
+    suffix: ''
+```
 
 Whatever works for you :)
