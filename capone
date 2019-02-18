@@ -1,0 +1,25 @@
+#!/usr/bin/env ruby
+# encoding: UTF-8
+
+require 'yaml'
+
+config = YAML.load_file('capone.yml')
+
+bad_addresses = []
+
+ARGF.each do |line|
+  config['bad_actors'].each do |pattern|
+    if line.include?(pattern)
+      address = line.split(/\s+/).first
+
+      unless bad_addresses.include?(address)
+        bad_addresses << address
+        break
+      end
+    end
+  end
+end
+
+bad_addresses.each do |address|
+  puts [config['action']['prefix'], address, config['action']['suffix']].join(' ')
+end

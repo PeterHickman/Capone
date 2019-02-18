@@ -1,0 +1,15 @@
+bad_actors:
+    - phpMyAdmin
+    - w00tw00t
+    - GET http
+    - CONNECT
+    - index.php
+    - setup.php
+    - config.php
+    - mysql
+    - mySql
+    - MySql
+    - cgi
+action:
+    prefix: 'bh add'
+    suffix: ''
