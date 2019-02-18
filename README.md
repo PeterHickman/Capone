@@ -28,7 +28,7 @@ action:
 
 The list of strings need not be long and complex and it gets diminishing returns quite quickly. To be honest for me a lot of this could be replaced with `.php` as I don't run php apps
 
-The actions section is what to do with the addresses it finds. In this example the string each found address will be written to stdout as `bh add X.X.X.X`. `bh` is a tool I use to manage my blacklist. This allows me to use the output to add the blacklist using my preferred tool. If you are using `iptables` then you could use
+The actions section is what to do with the addresses it finds. In this example a string will be written to stdout for each address that it finds, `bh add X.X.X.X`. `bh` is a tool I use to manage my blacklist. This allows me to use the output to add the address to the  blacklist using my preferred tool. If you are using `iptables` then you could use
 
 ```yaml
 action:
