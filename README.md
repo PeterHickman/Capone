@@ -6,7 +6,7 @@ Obviously not perfect but a few simple rules will easily catch most of the scrip
 
 ## The config file
 
-For now the process is driven by the config file called `capone.yml` and stored in the same location as the scrfipt is being run from. This will change as the project progresses
+For now the process is driven by the config file called `capone.yml` and stored in the same location as the script is being run from. This will change as the project progresses
 
 ```yaml
 bad_actors:
@@ -26,4 +26,6 @@ action:
     suffix: ''
 ```
 
-The list of strings need not be long and complex and it get diminishing returns quite quickly. 
+The list of strings need not be long and complex and it gets diminishing returns quite quickly. To be honest for me a lot of this could be replaced with `.php` as I don't run php apps
+
+The actions section is what to do with the addresses it finds. In this example the string each found address will be written to stdout as `bh add X.X.X.X`. `bh` is a tool I use to manage my blacklist. This allows 
