@@ -44,3 +44,18 @@ action:
 ```
 
 Whatever works for you :)
+
+## Usage
+
+The basic usage is:
+
+    $ capone --config /path/to/config.yml /var/log/nginx/access.log
+
+Which will read the configuration from `/path/to/config.yml` and process the log file(s) given on the command line. When run it will output the list of addresses to ban to stdout
+
+To list the lines that have been matched add the option `--debug yes` to the command line and the lines that matched will be written to stderr
+
+It can also take input from stdin such as
+
+    $ cat /var/log/nginx/access.log | capone --config /path/to/config.yml
+
