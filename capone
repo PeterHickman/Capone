@@ -3,23 +3,103 @@
 
 require 'yaml'
 
-config = YAML.load_file('capone.yml')
+class Capone
+  def initialize(config, debug = false)
+    @config = config
+    @debug = debug
 
-bad_addresses = []
+    @bad_addresses = []
+  end
 
-ARGF.each do |line|
-  config['bad_actors'].each do |pattern|
-    if line.include?(pattern)
-      address = line.split(/\s+/).first
+  def process_line(line)
+    @config['bad_actors'].each do |pattern|
+      if line.include?(pattern)
+        address = line.split(/\s+/).first
 
-      unless bad_addresses.include?(address)
-        bad_addresses << address
-        break
+        STDERR.puts line if @debug
+
+        unless @bad_addresses.include?(address)
+          @bad_addresses << address
+          break
+        end
       end
+    end
+  end
+
+  def results
+    @bad_addresses.map do |address|
+      [@config['action']['prefix'], address, @config['action']['suffix']].join(' ')
     end
   end
 end
 
-bad_addresses.each do |address|
-  puts [config['action']['prefix'], address, config['action']['suffix']].join(' ')
+def opts
+  commands = ARGV.dup
+
+  options = {}
+  arguments = []
+
+  end_of_options = false
+
+  while commands.any?
+    x = commands.shift
+
+    if end_of_options
+      arguments << x
+    elsif x == '--'
+      end_of_options = true
+    elsif x.index('--') == 0
+      y = commands.shift
+      options[x] = y
+    else
+      arguments << x
+      end_of_options = true
+    end
+  end
+
+  [options, arguments]
+end
+
+def truthy(text)
+  text ||= ''
+
+  case text.downcase
+  when 'y', 'yes'
+    true
+  when 't', 'true'
+    true
+  when '1'
+    true
+  else
+    false
+  end
+end
+
+options, arguments = opts()
+
+unless options.has_key?('--config')
+  puts "Required option --config missing"
+  exit(0)
+end
+
+config = YAML.load_file(options['--config'])
+
+debug = truthy(options['--debug'])
+
+capone = Capone.new(config, debug)
+
+if arguments.any?
+  arguments.each do |filename|
+    File.open(filename, 'r').each do |line|
+      capone.process_line(line)
+    end
+  end
+else
+  STDIN.read.split("\n").each do |line|
+    capone.process_line(line)
+  end
+end
+
+capone.results.each do |line|
+  puts line
 end
