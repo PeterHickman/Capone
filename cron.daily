@@ -1,0 +1,3 @@
+#!/bin/sh -e
+# Scan the logs and ban the bad guys
+/usr/local/sbin/capone --config /etc/capone.yml /var/log/nginx/*.log | bash
