@@ -6,6 +6,34 @@ if ! [ "$(id -u)" = 0 ]; then
 fi
 
 ##
+# Which firewall are we using
+##
+
+FW="NONE"
+
+if [ $(command -v bh) ]; then
+  FW='BH'
+elif [ $(command -v ufw) ]; then
+  FW='UFW'
+elif [ $(command -v iptables) ]; then
+  FW='IPTABLES'
+else
+  echo "Unable to determine the firewall (one of bh, ufw or iptables)"
+fi
+
+##
+# Where are the logs
+##
+
+LOGS='NONE'
+
+if [ -d '/var/log/nginx' ]; then
+  LOGS='NGINX'
+else
+  echo "Unable to locate the web server log directory"
+fi
+
+##
 # When installing we would install as root, however on
 # BSD based systems (such as OSX) this is not a valid
 # group / user for install so we use the numberic value
